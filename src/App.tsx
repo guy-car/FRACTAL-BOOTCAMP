@@ -1,24 +1,35 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import { initialGameState, 
+  isValidMove, 
+  makeMove,
+  playerWins,
+  switchPlayer
+} from './game.ts'
 
 function App() {
 
-  const initialGame = [null, null, null, null, null, null, null, null, 'x']
-
-  const [game, setGame] = useState(initialGame)
-  const [currentPlayer, setCurrentPlayer] = useState('x')
+  const [game, setGame] = useState(initialGameState())
 
   const clickHandler = (index) => {
-    const newGame = structuredClone(game)
-    console.log('I was clicked', index)
 
-    if (game[index] !== null)
+        // User can only click on empty cells
+    if (!isValidMove(game, index))
       return console.log("can't click there buddy")
 
-    newGame[index] = currentPlayer
+    // Player makes a move
+    const newGame = makeMove(game, index)
+
+    // If game is over, user can no-longer click
+    if (playerWins(newGame)) {
+      console.log('Game won!')
+    }
+
+    // Game continues, switching player
+    const nextPlayer = switchPlayer(newGame.currentPlayer)
+    newGame.currentPlayer = nextPlayer
     setGame(newGame)
-    playerWins(newGame, currentPlayer)? console.log('Game won!') : null
-    setCurrentPlayer(currentPlayer === 'x'? 'o' : 'x')
+    
   }
 
   const wonGame = [
@@ -32,11 +43,11 @@ function App() {
     [2, 4, 6]  // diagonal from top-right to bottom-left
 ]
 
-  const playerWins = (game, currentPlayer) => {
-    return wonGame.some((wonGame) => wonGame.every((cellIndex) => game[cellIndex] === currentPlayer))
+  const playerWins = (game) => {
+    return wonGame.some((wonGame) => wonGame.every((cellIndex) => game.board[cellIndex] === game.currentPlayer))
   }
     
-  const boardEl = game.map((cell, index) => 
+  const boardEl = game.board.map((cell, index) => 
   <div key={index} onClick={() => clickHandler(index)} className='cell'>{cell}</div>
   )
 

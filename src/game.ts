@@ -17,3 +17,33 @@ export const initialGameState = (): Game => {
     }
 }
 
+export function isValidMove(game: Game, index: number): boolean {
+    return game.board[index] === null
+}
+
+export function makeMove(game: Game, index: number): Game {
+    const newGame = structuredClone(game)
+    newGame.board[index] = newGame.currentPlayer
+    return newGame
+}
+
+export function playerWins(game: Game): boolean {
+    return winningStates.some((winState) => 
+        winState.every((cellIndex) => 
+            game.board[cellIndex] === game.currentPlayer))
+}
+
+export function switchPlayer(currentPlayer: Player):Player {
+    return currentPlayer === 'x' ? 'o' : 'x'
+}
+
+const winningStates = [
+    [0, 1, 2], // top row
+    [3, 4, 5], // middle row
+    [6, 7, 8], // bottom row
+    [0, 3, 6], // left column
+    [1, 4, 7], // middle column
+    [2, 5, 8], // right column
+    [0, 4, 8], // diagonal from top-left to bottom-right
+    [2, 4, 6]  // diagonal from top-right to bottom-left
+]
