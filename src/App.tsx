@@ -4,7 +4,8 @@ import { initialGameState,
   isValidMove, 
   makeMove,
   playerWins,
-  switchPlayer
+  switchPlayer,
+  checkEndState
 } from './game.ts'
 
 function App() {
@@ -13,53 +14,50 @@ function App() {
 
   const clickHandler = (index) => {
 
-        // User can only click on empty cells
+    // User can no longer click if game is won or tie
+    if (game.endState !== undefined) return
+
+    // User can only click on empty cells
     if (!isValidMove(game, index))
       return console.log("can't click there buddy")
 
     // Player makes a move
     const newGame = makeMove(game, index)
 
-    // If game is over, user can no-longer click
-    if (playerWins(newGame)) {
-      console.log('Game won!')
+    // Check state of game after player made a move
+    const endState = checkEndState(newGame)
+
+    // Check if game is won
+    if (endState === 'x' || endState === 'o') {
+      newGame.endState = endState
+      console.log(`Player ${newGame.currentPlayer} wins!`)
+    }
+
+    // Check if game is a tie
+    if (endState === 'tie') {
+      newGame.endState = endState
+      console.log("it's a tie!")
     }
 
     // Game continues, switching player
     const nextPlayer = switchPlayer(newGame.currentPlayer)
     newGame.currentPlayer = nextPlayer
     setGame(newGame)
-    
-  }
-
-  const wonGame = [
-    [0, 1, 2], // top row
-    [3, 4, 5], // middle row
-    [6, 7, 8], // bottom row
-    [0, 3, 6], // left column
-    [1, 4, 7], // middle column
-    [2, 5, 8], // right column
-    [0, 4, 8], // diagonal from top-left to bottom-right
-    [2, 4, 6]  // diagonal from top-right to bottom-left
-]
-
-  const playerWins = (game) => {
-    return wonGame.some((wonGame) => wonGame.every((cellIndex) => game.board[cellIndex] === game.currentPlayer))
   }
     
   const boardEl = game.board.map((cell, index) => 
   <div key={index} onClick={() => clickHandler(index)} className='cell'>{cell}</div>
   )
 
+  console.log('gameEndState is: ', game.endState)
   
   return (
-    <>
+    <div className='main-section'>
     <h1>Tic Tac Toe</h1>
     <div className="game-board">
       {boardEl}
     </div>
-
-    </>
+    </div>
   )
 }
 
