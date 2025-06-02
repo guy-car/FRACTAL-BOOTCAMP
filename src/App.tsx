@@ -3,10 +3,12 @@ import './App.css'
 import { initialGameState, 
   isValidMove, 
   makeMove,
-  playerWins,
   switchPlayer,
-  checkEndState
+  checkEndState,
+  playerWins
 } from './game.ts'
+
+import clsx from 'clsx'
 
 function App() {
 
@@ -30,7 +32,9 @@ function App() {
     // Check if game is won
     if (endState === 'x' || endState === 'o') {
       newGame.endState = endState
-      console.log(`Player ${newGame.currentPlayer} wins!`)
+      // console.log(`Player ${newGame.currentPlayer} wins!`)
+      const winningCells = playerWins(newGame)
+      console.log('Winning cells: ', winningCells)
     }
 
     // Check if game is a tie
@@ -44,19 +48,24 @@ function App() {
     newGame.currentPlayer = nextPlayer
     setGame(newGame)
   }
+
+  const cellClass = clsx({
+    ['cell'] : true,
+    ['cell-won'] : game.endState === 'x' || game.endState === 'o'
+  })
     
   const boardEl = game.board.map((cell, index) => 
-  <div key={index} onClick={() => clickHandler(index)} className='cell'>{cell}</div>
+  <div key={index} onClick={() => clickHandler(index)} className={cellClass}><p>{cell}</p></div>
   )
 
   console.log('gameEndState is: ', game.endState)
-  
+
   return (
     <div className='main-section'>
-    <h1>Tic Tac Toe</h1>
-    <div className="game-board">
-      {boardEl}
-    </div>
+      <h1>Tic Tac Toe</h1>
+      <div className="game-board">
+        {boardEl}
+      </div>
     </div>
   )
 }

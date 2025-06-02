@@ -5,6 +5,12 @@
   text-align: center;
 }
 
+.main-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .game-board {
   display: grid;
   grid-template-columns: repeat(3, 100px);
@@ -13,13 +19,30 @@
 }
 
 .cell {
+  display: flex;
    flex-basis: 33%;
    border: rgb(101, 162, 180), solid;
    background-color: rgb(53, 52, 51);
+  align-items: center;   /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
+  width: 100px;
+  height: 100px;
 
+}
+
+.cell-won {
+  flex-basis: 33%;
+  border: rgb(101, 162, 180), solid;
+  background-color: rgba(69, 205, 67, 0.657);
+    align-items: center;   /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
 }
 
 .cell:hover {
   border: rgb(101, 121, 180), solid;
   background-color: rgb(82, 80, 79);
+}
+
+p {
+  font-size: 3rem;
 }
