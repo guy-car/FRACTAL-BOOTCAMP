@@ -37,6 +37,18 @@ export function switchPlayer(currentPlayer: Player):Player {
     return currentPlayer === 'x' ? 'o' : 'x'
 }
 
+export function checkEndState(game: Game): EndState {
+    if (playerWins(game)) 
+        return game.currentPlayer
+
+    if (game.board.every(cell => cell !== null))
+        return 'tie'
+
+    else return undefined
+}
+
+
+
 const winningStates = [
     [0, 1, 2], // top row
     [3, 4, 5], // middle row
