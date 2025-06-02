@@ -27,8 +27,8 @@ export function makeMove(game: Game, index: number): Game {
     return newGame
 }
 
-export function playerWins(game: Game): boolean {
-    return winningStates.some((winState) => 
+export function playerWins(game: Game): number[] | null {
+    return winningStates.find((winState) => 
         winState.every((cellIndex) => 
             game.board[cellIndex] === game.currentPlayer))
 }
