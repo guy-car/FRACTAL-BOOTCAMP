@@ -5,7 +5,7 @@ import { initialGameState,
   makeMove,
   switchPlayer,
   checkEndState,
-  playerWins
+  findWinningCells
 } from './game.ts'
 
 import clsx from 'clsx'
@@ -13,6 +13,7 @@ import clsx from 'clsx'
 function App() {
 
   const [game, setGame] = useState(initialGameState())
+  const [winningCells, setWinningCells] = useState([])
 
   const clickHandler = (index) => {
 
@@ -33,8 +34,9 @@ function App() {
     if (endState === 'x' || endState === 'o') {
       newGame.endState = endState
       // console.log(`Player ${newGame.currentPlayer} wins!`)
-      const winningCells = playerWins(newGame)
-      console.log('Winning cells: ', winningCells)
+      const winningC = findWinningCells(newGame)
+      setWinningCells(winningC)
+      console.log('Winning cells: ', winningC)
     }
 
     // Check if game is a tie
@@ -49,14 +51,14 @@ function App() {
     setGame(newGame)
   }
 
-  const cellClass = clsx({
-    ['cell'] : true,
-    ['cell-won'] : game.endState === 'x' || game.endState === 'o'
+  const boardEl = game.board.map((cell, index) => {
+      const cellClass = clsx({
+      ['cell'] : true,
+      ['cell-won'] : winningCells?.includes(index)
+    })
+    return <div key={index} onClick={() => clickHandler(index)} className={cellClass}><p>{cell}</p></div>
+
   })
-    
-  const boardEl = game.board.map((cell, index) => 
-  <div key={index} onClick={() => clickHandler(index)} className={cellClass}><p>{cell}</p></div>
-  )
 
   console.log('gameEndState is: ', game.endState)
 
