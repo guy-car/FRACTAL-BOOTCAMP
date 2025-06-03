@@ -30,6 +30,11 @@
 
 }
 
+.cell:hover {
+  border: rgb(101, 121, 180), solid;
+  background-color: rgb(82, 80, 79);
+}
+
 .cell-won {
   flex-basis: 33%;
   border: rgb(101, 162, 180), solid;
@@ -38,10 +43,15 @@
   justify-content: center; /* Horizontal centering */
 }
 
-.cell:hover {
-  border: rgb(101, 121, 180), solid;
-  background-color: rgb(82, 80, 79);
+.cell-won:hover {
+  flex-basis: 33%;
+  border: rgb(101, 162, 180), solid;
+  background-color: rgba(69, 205, 67, 0.657);
+    align-items: center;   /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
 }
+
+
 
 p {
   font-size: 3rem;

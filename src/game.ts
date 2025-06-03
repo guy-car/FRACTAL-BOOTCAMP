@@ -27,7 +27,7 @@ export function makeMove(game: Game, index: number): Game {
     return newGame
 }
 
-export function playerWins(game: Game): number[] | null {
+export function findWinningCells(game: Game): number[] | null {
     return winningStates.find((winState) => 
         winState.every((cellIndex) => 
             game.board[cellIndex] === game.currentPlayer))
@@ -38,7 +38,7 @@ export function switchPlayer(currentPlayer: Player):Player {
 }
 
 export function checkEndState(game: Game): EndState {
-    if (playerWins(game)) 
+    if (findWinningCells(game)) 
         return game.currentPlayer
 
     if (game.board.every(cell => cell !== null))
