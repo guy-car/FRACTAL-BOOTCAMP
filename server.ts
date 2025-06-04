@@ -1,49 +1,25 @@
 import express from "express";
 import ViteExpress from "vite-express";
-import { initialGameState, makeMove, checkEndState, switchPlayer } from './src/game.ts'
+import { InMemoryTicTacToeApi } from './src/api'
 
-const games = new Map()
+const api = new InMemoryTicTacToeApi
 
 const app = express();
 app.use(express.json())
 
-app.get("/message", (_, res) => res.send("Hello from express!"));
-
-app.post('/games', (req, res) => {
-    const gameId = 1
-    const game = initialGameState()
-    games.set(gameId, game)
-    res.json({ gameId, game })
+app.post('/api/create', async (req, res) => {
+    const game = await api.createGame()
+    res.json(game)
 })
 
-console.log('games is: ', games)
+app.get('/api/game/:gameId', async (req, res) => {
+    const game = await api.getGame(req.params.gameId)
+    res.json(game)
+})
 
-app.post('/games/:gameId/moves', (req, res) => {
-    const gameId = parseInt(req.params.gameId)
-    const cellIndex = req.body.cellIndex
-    const game = games.get(gameId)
-
-    if (!game) {
-        return res.status(404).json({ error: 'Game not found'})
-    }
-
-    console.log('Found game:', game)
-    // update the game
-    const updatedGame = makeMove(game, cellIndex)
-    const endState = checkEndState(updatedGame)
-
-    if (endState) {
-        updatedGame.endState = endState
-    } else {
-        updatedGame.currentPlayer = switchPlayer(updatedGame.currentPlayer)
-    }
-
-    // save the updated game to the Map
-    games.set(gameId, updatedGame)
-    
-    // return the updated game
-    res.json({ game: updatedGame })
-
+app.post('/api/game/:gameId/move', async (req, res) => {
+    const game = await api.makeMove(req.params.gameId, req.body.cellIndex)
+    res.json(game)
 })
 
 ViteExpress.listen(app, 3000, () => console.log(`Server is listening...`));

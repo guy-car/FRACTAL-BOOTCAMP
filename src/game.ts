@@ -3,20 +3,15 @@ export type Cell = Player | null
 export type Board = [Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
 export type CellIndex = number
 export type EndState = 'x' | 'o' | 'tie' | undefined
-export type GameState = {
-    id: string
-    currentPlayer: 'X' | 'O'
-    board: Board
-    result: GameResult
-}
 
 export type Game = {
+    id: string,
     board: Board,
     currentPlayer: Player,
     endState?: EndState
 }
 
-export const initialGameState = (): Game => {68. 
+export const initialGameState = (): Omit<Game, 'id'> => {
     return {
         board: [null, null, null, null, null, null, null, null, null],
         currentPlayer: 'x'
@@ -36,7 +31,7 @@ export function makeMove(game: Game, index: number): Game {
 export function findWinningCells(game: Game): number[] | null {
     return winningStates.find((winState) => 
         winState.every((cellIndex) => 
-            game.board[cellIndex] === game.currentPlayer))
+            game.board[cellIndex] === game.currentPlayer)) || null
 }
 
 export function switchPlayer(currentPlayer: Player):Player {
@@ -52,8 +47,6 @@ export function checkEndState(game: Game): EndState {
 
     else return undefined
 }
-
-
 
 const winningStates = [
     [0, 1, 2], // top row
