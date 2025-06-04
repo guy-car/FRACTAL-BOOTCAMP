@@ -3,6 +3,12 @@ export type Cell = Player | null
 export type Board = [Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
 export type CellIndex = number
 export type EndState = 'x' | 'o' | 'tie' | undefined
+export type GameState = {
+    id: string
+    currentPlayer: 'X' | 'O'
+    board: Board
+    result: GameResult
+}
 
 export type Game = {
     board: Board,
