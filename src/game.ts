@@ -16,7 +16,7 @@ export type Game = {
     endState?: EndState
 }
 
-export const initialGameState = (): Game => {
+export const initialGameState = (): Game => {68. 
     return {
         board: [null, null, null, null, null, null, null, null, null],
         currentPlayer: 'x'

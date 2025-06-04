@@ -15,10 +15,6 @@ function App() {
   const [gameId, setGameId] = useState(null)
   const [winningCells, setWinningCells] = useState([])
 
-  async function initialGame() {
-    const initialState = await api.createGame()
-    setGame(initialState)
-  }
   useEffect(() => {
     async function initGame() {
       const response = await fetch('/games', { method: 'POST' })
@@ -74,8 +70,13 @@ function App() {
   return (
     <div className='main-section'>
       <h1>Tic Tac Toe</h1>
-      <div className="game-board">
-        {boardEl}
+      <div className='game-section'>
+        <div className="game-board">
+          {boardEl}
+        </div>
+        <div className='current-player'>
+          <h3>Current player: <br></br>{game.currentPlayer}</h3>
+        </div>
       </div>
     </div>
   )
