@@ -1,0 +1,6 @@
+POST http://localhost:3000/games/1/moves
+Content-Type: application/json
+
+{
+  "cellIndex": 0
+}

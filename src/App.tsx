@@ -1,66 +1,75 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import { initialGameState, 
-  isValidMove, 
-  makeMove,
-  switchPlayer,
-  checkEndState,
+import {
   findWinningCells
 } from './game.ts'
+import { ServerTicTacToeApi } from './TicTacToeApi'
+import { type GameState } from './game'
 
 import clsx from 'clsx'
 
 function App() {
 
-  const [game, setGame] = useState(initialGameState())
+  const api = useMemo(() => new ServerTicTacToeApi(), [])
+  const [game, setGame] = useState<GameState | undefined>()
+  const [gameId, setGameId] = useState(null)
   const [winningCells, setWinningCells] = useState([])
 
-  const clickHandler = (index) => {
+  async function initialGame() {
+    const initialState = await api.createGame()
+    setGame(initialState)
+  }
+  useEffect(() => {
+    async function initGame() {
+      const response = await fetch('/games', { method: 'POST' })
+      const data = await response.json()
+      console.log('data is: ', data);
+      
+      setGameId(data.gameId)
+      setGame(data.game)
+    }
+    initGame()
+  }, [])
+
+  async function handleCellClick(index: number) {
 
     // User can no longer click if game is won or tie
-    if (game.endState !== undefined) return
+    if (!game || game.endState !== undefined) return
 
-    // User can only click on empty cells
-    if (!isValidMove(game, index))
-      return console.log("can't click there buddy")
+    try {
+      const response = await fetch(`/games/${gameId}/moves`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cellIndex: index })
+      })
+      const data = await response.json()
+      setGame(data.game)
 
-    // Player makes a move
-    const newGame = makeMove(game, index)
-
-    // Check state of game after player made a move
-    const endState = checkEndState(newGame)
-
-    // Check if game is won
-    if (endState === 'x' || endState === 'o') {
-      newGame.endState = endState
-      // console.log(`Player ${newGame.currentPlayer} wins!`)
-      const winningC = findWinningCells(newGame)
-      setWinningCells(winningC)
-      console.log('Winning cells: ', winningC)
+      // check for winning cells
+      if (data.game.endState === 'x' || data.game.endState === 'o') {
+        const winningC = findWinningCells(data.game)
+        setWinningCells(winningC)
+      }
+    } catch (error) {
+      console.error('Move failed:', error)
     }
-
-    // Check if game is a tie
-    if (endState === 'tie') {
-      newGame.endState = endState
-      console.log("it's a tie!")
-    }
-
-    // Game continues, switching player
-    const nextPlayer = switchPlayer(newGame.currentPlayer)
-    newGame.currentPlayer = nextPlayer
-    setGame(newGame)
   }
+
+  console.log('game is: ', game)
+
+  if (!game) return <div>Loading...</div>
 
   const boardEl = game.board.map((cell, index) => {
       const cellClass = clsx({
       ['cell'] : true,
       ['cell-won'] : winningCells?.includes(index)
     })
-    return <div key={index} onClick={() => clickHandler(index)} className={cellClass}><p>{cell}</p></div>
-
+    return (
+    <div key={index} onClick={() => handleCellClick(index)} className={cellClass}>
+      <p>{cell}</p>
+    </div>
+    )
   })
-
-  console.log('gameEndState is: ', game.endState)
 
   return (
     <div className='main-section'>
