@@ -1,30 +1,28 @@
 import { useState, useEffect, useMemo } from 'react'
 import './App.css'
-import {
-  findWinningCells
-} from './game.ts'
-import { ServerTicTacToeApi } from './TicTacToeApi'
-import { type GameState } from './game'
+import { findWinningCells } from './game.ts'
+import { ServerTicTacToeApi } from './api.ts'
+import { type Game } from './game'
 
 import clsx from 'clsx'
 
 function App() {
 
   const api = useMemo(() => new ServerTicTacToeApi(), [])
-  const [game, setGame] = useState<GameState | undefined>()
-  const [gameId, setGameId] = useState(null)
-  const [winningCells, setWinningCells] = useState([])
+  const [game, setGame] = useState<Game | undefined>()
+  const [gameId, setGameId] = useState<string | null>(null)
+  const [winningCells, setWinningCells] = useState<number[] | null>([])
 
   useEffect(() => {
+
     async function initGame() {
-      const response = await fetch('/games', { method: 'POST' })
-      const data = await response.json()
-      console.log('data is: ', data);
-      
-      setGameId(data.gameId)
-      setGame(data.game)
+      const game = await api.createGame()
+      console.log('game is: ', game)
+      setGame(game)
+      setGameId(game.id)
     }
     initGame()
+
   }, [])
 
   async function handleCellClick(index: number) {
@@ -33,25 +31,17 @@ function App() {
     if (!game || game.endState !== undefined) return
 
     try {
-      const response = await fetch(`/games/${gameId}/moves`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cellIndex: index })
-      })
-      const data = await response.json()
-      setGame(data.game)
+      const updatedGame = await api.makeMove(gameId!, index)
+      setGame(updatedGame)
 
-      // check for winning cells
-      if (data.game.endState === 'x' || data.game.endState === 'o') {
-        const winningC = findWinningCells(data.game)
+      if (updatedGame.endState === 'x' || updatedGame.endState === 'o') {
+        const winningC = findWinningCells(updatedGame)
         setWinningCells(winningC)
       }
     } catch (error) {
       console.error('Move failed:', error)
     }
   }
-
-  console.log('game is: ', game)
 
   if (!game) return <div>Loading...</div>
 
