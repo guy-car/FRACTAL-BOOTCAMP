@@ -2,6 +2,8 @@ import { type Game } from './game.ts'
 import { initialGameState, makeMove, checkEndState, switchPlayer } from './game.ts'
 import { v4 as uuidv4 } from 'uuid';
 
+const BASE_URL = "http://localhost:3000"
+
 export interface TicTacToeApi {
     createGame(): Promise<Game>
     makeMove(gameId: string, cellIndex: number): Promise<Game>
@@ -12,13 +14,13 @@ export interface TicTacToeApi {
 export class ClientTicTacToeApi implements TicTacToeApi {
 
     async getGames(): Promise<Game[]> {
-        const response = await fetch("/api/games")
+        const response = await fetch(`${BASE_URL}/api/games`)
         const games = await response.json()
         return games
     }
 
     async createGame(): Promise<Game> {
-        const response = await fetch('/api/create', {
+        const response = await fetch(`${BASE_URL}/api/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'}
         })
@@ -27,13 +29,13 @@ export class ClientTicTacToeApi implements TicTacToeApi {
     }
 
     async getGame(gameId: string): Promise<Game> {
-        const response = await fetch(`/api/game/${gameId}`)
+        const response = await fetch(`${BASE_URL}/api/game/${gameId}`)
         const data = await response.json()
         return data
     }
 
     async makeMove(gameId: string, cellIndex: number): Promise<Game> {
-        const response = await fetch(`/api/game/${gameId}/move`, {
+        const response = await fetch(`${BASE_URL}/api/game/${gameId}/move`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ cellIndex })
