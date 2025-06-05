@@ -8,7 +8,7 @@ export interface TicTacToeApi {
     getGame(gameId: string): Promise<Game>
 }
 
-export class ServerTicTacToeApi implements TicTacToeApi {
+export class ClientTicTacToeApi implements TicTacToeApi {
 
     async createGame(): Promise<Game> {
         const response = await fetch('/api/create', {
@@ -70,4 +70,5 @@ export class InMemoryTicTacToeApi implements TicTacToeApi {
         this.games.set(gameId, updatedGame)
         return updatedGame
     }
+
 }

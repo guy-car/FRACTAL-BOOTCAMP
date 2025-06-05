@@ -10,3 +10,11 @@ Frontend
 each cell is either x or o or undefined
 game ends when either 3 x or o line up
 
+____
+Create game lobby page
+
+Need to:
+- ~understand why we're using client Api~
+- Create a GameLobby.tsx component
+- Create a GameView.tsx component
+- create logic to get all games from DB
