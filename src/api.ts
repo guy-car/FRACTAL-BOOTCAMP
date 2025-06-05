@@ -5,10 +5,17 @@ import { v4 as uuidv4 } from 'uuid';
 export interface TicTacToeApi {
     createGame(): Promise<Game>
     makeMove(gameId: string, cellIndex: number): Promise<Game>
-    getGame(gameId: string): Promise<Game>
+    getGame(gameId: string): Promise<Game>,
+    getGames(): Promise<Game[]>
 }
 
 export class ClientTicTacToeApi implements TicTacToeApi {
+
+    async getGames(): Promise<Game[]> {
+        const response = await fetch("/api/games")
+        const games = await response.json()
+        return games
+    }
 
     async createGame(): Promise<Game> {
         const response = await fetch('/api/create', {
@@ -38,6 +45,10 @@ export class ClientTicTacToeApi implements TicTacToeApi {
 
 export class InMemoryTicTacToeApi implements TicTacToeApi {
     private games: Map<string, Game> = new Map
+
+    async getGames(): Promise<Game[]> {
+        return Array.from(this.games.values())
+    }
 
     async createGame(): Promise<Game> {
         const gameId = uuidv4()

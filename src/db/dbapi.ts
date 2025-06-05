@@ -3,10 +3,21 @@ import { games } from './schema.js';
 import { eq } from 'drizzle-orm';
 import { initialGameState, makeMove, checkEndState, switchPlayer } from '../game.ts'
 import { v4 as uuidv4 } from 'uuid';
-import { type Game } from '../game.ts'
+import { type Game, type Player, type Board, type EndState } from '../game.ts'
 import { type TicTacToeApi } from '../api.js';
 
 export class DbTicTacToeApi implements TicTacToeApi {
+
+    async getGames(): Promise<Game[]> {
+        const results = await db.select().from(games)
+        return results.map(game => ({
+            id: game.id,
+            currentPlayer: game.currentPlayer as Player,
+            board: game.board as Board,
+            result: game.endState as EndState,
+        }))
+    }
+
     async createGame(): Promise<Game> {
         const gameId = uuidv4()
         const gameData = initialGameState()
