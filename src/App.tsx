@@ -28,7 +28,7 @@ function App() {
   async function handleCellClick(index: number) {
 
     // User can no longer click if game is won or tie
-    if (!game || game.endState !== undefined) return
+    if ( game?.endState) return
 
     try {
       const updatedGame = await api.makeMove(gameId!, index)

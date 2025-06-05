@@ -1,8 +1,10 @@
 import express from "express";
 import ViteExpress from "vite-express";
-import { InMemoryTicTacToeApi } from './src/api'
+// import { InMemoryTicTacToeApi } from './src/api'
+import { DbTicTacToeApi } from './src/db/dbapi.js'
 
-const api = new InMemoryTicTacToeApi
+// const api = new InMemoryTicTacToeApi
+const api = new DbTicTacToeApi()
 
 const app = express();
 app.use(express.json())
