@@ -1,13 +1,15 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { findWinningCells } from '../game.ts'
 import { ClientTicTacToeApi } from '../api.ts'
 import { type Game } from '../game'
 import { useLoaderData } from 'react-router'
+import { io } from "socket.io-client";
+import { GAME_UPDATED, USER_JOINED } from "../../constants";
 
 import clsx from 'clsx'
 
-
 function GameView() {
+
     const api = useMemo(() => new ClientTicTacToeApi(), [])
     const [winningCells, setWinningCells] = useState<number[] | null>([])
 
@@ -15,17 +17,6 @@ function GameView() {
 
     const [gameState, setGameState] = useState<Game | undefined>(initialGame)
 
-//   useEffect(() => {
-
-//     async function initGame() {
-//       const game = await api.createGame()
-//       console.log('game is: ', game)
-//       setGameState(game)
-//       setGameId(game.id)
-//     }
-//     initGame()
-
-//   }, [])
 
   async function handleCellClick(index: number) {
 
@@ -45,6 +36,27 @@ function GameView() {
     }
   }
 
+    useEffect(() => {
+        const socket = io("http://localhost:3000");
+        socket.on("connect", () => {
+            console.log("connected to socket");
+            // Join the game room
+            socket.emit("join-game", gameState?.id);
+
+            socket.on(USER_JOINED, (userId: string) => {
+                console.log(`user ${userId} joined`);
+            });
+            socket.on(GAME_UPDATED, (game: Game) => {
+                console.log("game updated", game);
+                setGameState(game);
+            });
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
   if (!gameState) return <div>Loading...</div>
 
   const boardEl = gameState.board.map((cell, index) => {
@@ -58,6 +70,8 @@ function GameView() {
     </div>
     )
   })
+
+
 
   return (
       <div className='game-section'>
