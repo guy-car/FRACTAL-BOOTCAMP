@@ -37,14 +37,14 @@ function GameLobby() {
   }
 
     return (
-        <>
+        <div className='lobby'>
             <h3>Welcome to the Game Lobby</h3>
             <button onClick={createNewGame}>Start New Game</button>
             <br></br>
             <button onClick={() => setShowGames(!showGames)}>Load Games</button>
             <br></br>
             {gamesEl()}
-        </>
+        </div>
     )
 }
 

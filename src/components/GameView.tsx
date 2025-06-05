@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
+import { useNavigate } from 'react-router'
 import { findWinningCells } from '../game.ts'
 import { ClientTicTacToeApi } from '../api.ts'
 import { type Game } from '../game'
@@ -16,6 +17,8 @@ function GameView() {
     const { game: initialGame } = useLoaderData<{ game: Game }>()
 
     const [gameState, setGameState] = useState<Game | undefined>(initialGame)
+
+    const navigate = useNavigate()
 
 
   async function handleCellClick(index: number) {
@@ -71,17 +74,21 @@ function GameView() {
     )
   })
 
-
-
   return (
-      <div className='game-section'>
-        <div className="game-board">
-          {boardEl}
+    <>
+        <div className='game-section'>
+            <div className="game-board">
+                {boardEl}
+            </div>
+            <div className='current-player'>
+                <h4>Current player: <br></br>{gameState.currentPlayer}</h4>
+            </div>
         </div>
-        <div className='current-player'>
-          <h3>Current player: <br></br>{gameState.currentPlayer}</h3>
+        <div className='game-section-options'>
+            <button onClick={() => navigate('/')}>Back to Lobby</button>
         </div>
-      </div>
+    </>
+
   )
 }
 
