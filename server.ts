@@ -24,4 +24,9 @@ app.post('/api/game/:gameId/move', async (req, res) => {
     res.json(game)
 })
 
+app.get('/api/games', async (req, res) => {
+    const games = await api.getGames()
+    res.json(games)
+})
+
 ViteExpress.listen(app, 3000, () => console.log(`Server is listening...`));

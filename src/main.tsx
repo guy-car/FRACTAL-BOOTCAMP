@@ -18,10 +18,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         Component: GameLobby,
-        // loader: async () => {
-        //   const games = await api.getGames()
-        //   return { games }
-        // },
+        loader: async () => {
+          const games = await api.getGames()
+          return { games }
+        },
       },
       {
         path: "/game/:gameId",
