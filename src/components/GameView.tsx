@@ -7,7 +7,6 @@ import { useLoaderData } from 'react-router'
 import { io } from "socket.io-client";
 import { GAME_UPDATED, USER_JOINED } from "../../constants";
 import clsx from 'clsx'
-import { log } from 'console'
 
 function GameView() {
 
@@ -77,7 +76,7 @@ function GameView() {
       ['cell'] : true,
       ['cell-won'] : winningCells?.includes(index)
     })
-    const getCellContent = (cell) => {
+    const getCellContent = (cell: string | null) => {
       if (cell === 'x') return bluePillImg
       if (cell === 'o') return redPillImg
       return null

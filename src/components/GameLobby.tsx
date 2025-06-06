@@ -1,9 +1,8 @@
-import { useLoaderData, Link, useNavigate } from 'react-router'
+import { useLoaderData, useNavigate } from 'react-router'
 import { useState, useMemo } from "react"
 import type { Game } from "../game"
 import { ClientTicTacToeApi } from '../api'
-import { time } from 'console'
-
+import { format } from 'date-fns'
 
 function GameLobby() {
 
@@ -11,19 +10,13 @@ function GameLobby() {
 
     const { games: initialGames } = useLoaderData<{ games: Game[] }>()
 
-    const [games, setGames] = useState<Game[]>(initialGames)
+    const [games] = useState<Game[]>(initialGames)
     const [showGames, setShowGames] = useState<boolean>(false)
 
     const navigate = useNavigate()
 
-const formatDate = (timeCreated: string) => {
-    return new Date(timeCreated).toLocaleDateString()
-}
-
   const redPillImg = <img src='/red_pill.png' alt='Red pill' className='red-pill' />
   const bluePillImg = <img src='/blue_pill.png' alt='Blue pill' className='blue-pill' />
-
-    console.log('games is :', games)
 
     const gamesEl = () => {
         if (!showGames) return null
@@ -32,6 +25,9 @@ const formatDate = (timeCreated: string) => {
 
             const isInProgress = game.board.some(cell => cell !== null)
             const isUnplayed = !isInProgress
+
+            const isoDate = game.timeCreated
+            const formattedDate = format(new Date(isoDate!), 'MM/dd/yyyy')
 
             const gameStatus = () => {
                 if (isInProgress && !game.endState) return 'in progress'
@@ -44,7 +40,7 @@ const formatDate = (timeCreated: string) => {
                 <button className='load-game-btn' onClick={() => 
                     navigate(`/game/${game.id}`)}
                     >
-                        {formatDate(game.timeCreated)} - {gameStatus()}
+                        {formattedDate} - {gameStatus()}
                 </button>
             </div>
             )

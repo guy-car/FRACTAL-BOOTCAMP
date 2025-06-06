@@ -1,6 +1,5 @@
 import { type Game } from './game.ts'
 import { initialGameState, makeMove, checkEndState, switchPlayer } from './game.ts'
-import { v4 as uuidv4 } from 'uuid';
 
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
@@ -53,11 +52,9 @@ export class InMemoryTicTacToeApi implements TicTacToeApi {
     }
 
     async createGame(): Promise<Game> {
-        const gameId = uuidv4()
         const game = initialGameState()
-        const gameWithId = {...game, id: gameId}
-        this.games.set(gameId, gameWithId)
-        return gameWithId
+        this.games.set(game.id, game)
+        return game
     }
 
     async getGame(gameId: string): Promise<Game> {
