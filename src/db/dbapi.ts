@@ -23,7 +23,7 @@ export class DbTicTacToeApi implements TicTacToeApi {
     }
 
         async getGames(): Promise<Game[]> {
-        const results = await db.select().from(games).orderBy(sql`${games.timeCreated} desc nulls last`).limit(10)
+        const results = await db.select().from(games).orderBy(sql`${games.timeCreated} desc nulls last`).limit(5)
         return results.map(game => ({
             id: game.id,
             currentPlayer: game.currentPlayer as Player,

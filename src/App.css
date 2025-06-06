@@ -112,6 +112,24 @@ button:hover::before {
 
 }
 
+.load-game-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.load-game-btn img {
+  width: 5%;
+  height: 5%;
+  object-fit: contain;
+  padding: 0;
+  padding-left: 10px;
+  margin: 0;
+}
+
+
+
 /* GAME VIEW */
 .game-section {
   display: grid;
