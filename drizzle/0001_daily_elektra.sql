@@ -1,0 +1,1 @@
+ALTER TABLE "games" ADD COLUMN "time_created" timestamp DEFAULT NOW();

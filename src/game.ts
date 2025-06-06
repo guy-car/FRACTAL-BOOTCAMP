@@ -8,10 +8,11 @@ export type Game = {
     id: string,
     board: Board,
     currentPlayer: Player,
-    endState?: EndState
+    endState?: EndState,
+    timeCreated: string
 }
 
-export const initialGameState = (): Omit<Game, 'id'> => {
+export const initialGameState = (): Omit<Game, 'id' | 'timeCreated'> => {
     return {
         board: [null, null, null, null, null, null, null, null, null],
         currentPlayer: 'x'
