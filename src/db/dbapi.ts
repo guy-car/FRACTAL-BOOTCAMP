@@ -2,24 +2,21 @@ import { db } from './index.js';
 import { games } from './schema.js';
 import { eq, sql } from 'drizzle-orm';
 import { initialGameState, makeMove, checkEndState, switchPlayer } from '../game.ts'
-import { v4 as uuidv4 } from 'uuid';
 import { type Game, type Player, type Board, type EndState } from '../game.ts'
 import { type TicTacToeApi } from '../api.js';
 
 export class DbTicTacToeApi implements TicTacToeApi {
 
     async createGame(): Promise<Game> {
-        const gameId = uuidv4()
-        const gameData = initialGameState()
-        const gameWithId = {...gameData, id: gameId }
+        const game = initialGameState()
 
         await db.insert(games).values({
-            id: gameId,
-            board: gameWithId.board,
-            currentPlayer: gameWithId.currentPlayer,
-            endState: gameWithId.endState || null
+            id: game.id,
+            board: game.board,
+            currentPlayer: game.currentPlayer,
+            endState: game.endState || null,
         })
-        return gameWithId
+        return game
     }
 
         async getGames(): Promise<Game[]> {
@@ -44,7 +41,8 @@ export class DbTicTacToeApi implements TicTacToeApi {
             id: game.id,
             board: game.board as Game['board'],
             currentPlayer: game.currentPlayer as Game['currentPlayer'],
-            endState: game.endState as Game['endState']
+            endState: game.endState as Game['endState'],
+            timeCreated: game.timeCreated
         }
     }
 
