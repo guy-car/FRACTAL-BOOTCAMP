@@ -6,8 +6,8 @@ import { type Game } from '../game'
 import { useLoaderData } from 'react-router'
 import { io } from "socket.io-client";
 import { GAME_UPDATED, USER_JOINED } from "../../constants";
-
 import clsx from 'clsx'
+import { log } from 'console'
 
 function GameView() {
 
@@ -60,10 +60,17 @@ function GameView() {
         };
     }, []);
 
+    console.log('gameState is: ', gameState)
+
   if (!gameState) return <div>Loading...</div>
 
   const redPillImg = <img src='/red_pill.png' alt='Red pill' className='red-pill' />
   const bluePillImg = <img src='/blue_pill.png' alt='Blue pill' className='blue-pill' />
+
+      const bgClass = clsx({
+      ['game-section'] : true ,
+      ['game-won'] : gameState.endState
+    })
 
   const boardEl = gameState.board.map((cell, index) => {
       const cellClass = clsx({
@@ -84,7 +91,7 @@ function GameView() {
 
   return (
     <>
-        <div className='game-section'>
+        <div className={bgClass}>
             <div className="game-board">
                 {boardEl}
             </div>

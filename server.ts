@@ -8,8 +8,15 @@ import { type Game } from './src/game'
 
 const app = express();
 app.use(express.json())
+
+const localURL = "http://localhost:5173"
+const productionURL = process.env.CLIENT_URL 
+const env = process.env.NODE_ENV
+
+if (env === 'production' && process.env.CLIENT_URL === undefined) throw new Error('CLIENT_URL is missing')
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: env === 'production' ? productionURL : localURL,
     methods: ["GET", "POST"],
 }))
 
