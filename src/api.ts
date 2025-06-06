@@ -2,7 +2,7 @@ import { type Game } from './game.ts'
 import { initialGameState, makeMove, checkEndState, switchPlayer } from './game.ts'
 import { v4 as uuidv4 } from 'uuid';
 
-const BASE_URL = "http://localhost:3000"
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
 export interface TicTacToeApi {
     createGame(): Promise<Game>
