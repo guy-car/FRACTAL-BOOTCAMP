@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 export type Player = 'o' | 'x'
 export type Cell = Player | null
 export type Board = [Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
@@ -9,13 +10,15 @@ export type Game = {
     board: Board,
     currentPlayer: Player,
     endState?: EndState,
-    timeCreated: string
+    timeCreated: Date | null,
 }
 
-export const initialGameState = (): Omit<Game, 'id' | 'timeCreated'> => {
+export const initialGameState = (): Game => {
     return {
+        id: uuidv4(),
         board: [null, null, null, null, null, null, null, null, null],
-        currentPlayer: 'x'
+        currentPlayer: 'x',
+        timeCreated: null
     }
 }
 
