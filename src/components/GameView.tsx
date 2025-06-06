@@ -62,14 +62,22 @@ function GameView() {
 
   if (!gameState) return <div>Loading...</div>
 
+  const redPillImg = <img src='/red_pill.png' alt='Red pill' className='red-pill' />
+  const bluePillImg = <img src='/blue_pill.png' alt='Blue pill' className='blue-pill' />
+
   const boardEl = gameState.board.map((cell, index) => {
       const cellClass = clsx({
       ['cell'] : true,
       ['cell-won'] : winningCells?.includes(index)
     })
+    const getCellContent = (cell) => {
+      if (cell === 'x') return bluePillImg
+      if (cell === 'o') return redPillImg
+      return null
+    }
     return (
     <div key={index} onClick={() => handleCellClick(index)} className={cellClass}>
-      <p>{cell}</p>
+      <p>{getCellContent(cell)}</p>
     </div>
     )
   })
@@ -81,7 +89,7 @@ function GameView() {
                 {boardEl}
             </div>
             <div className='current-player'>
-                <h4>Current player: <br></br>{gameState.currentPlayer}</h4>
+                <h4>Current player: <br></br>{gameState.currentPlayer === 'x'? bluePillImg : redPillImg}</h4>
             </div>
         </div>
         <div className='game-section-options'>

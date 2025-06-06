@@ -124,6 +124,11 @@ button:hover::before {
   grid-column: 3;
   justify-self: center
 }
+.current-player img {
+  width: 30%;
+  height: 30%;
+  object-fit: contain;
+}
 
 .game-board {
   grid-column: 2;
@@ -151,7 +156,7 @@ button:hover::before {
 .cell-won {
   flex-basis: 33%;
   border: rgb(101, 162, 180), solid;
-  background-color: rgba(69, 205, 67, 0.657);
+  background-color:#00ff00a9;
     align-items: center;   /* Vertical centering */
   justify-content: center; /* Horizontal centering */
 }
@@ -159,11 +164,23 @@ button:hover::before {
 .cell-won:hover {
   flex-basis: 33%;
   border: rgb(101, 162, 180), solid;
-  background-color: rgba(69, 205, 67, 0.657);
+  background-color: #00ff0074;
     align-items: center;   /* Vertical centering */
   justify-content: center; /* Horizontal centering */
 }
 
 .game-section-options {
   margin-top: 30px;
+}
+
+.red-pill {
+  width: 83%;
+  height: 83%;
+  object-fit: contain;
+}
+
+.blue-pill {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
 }
