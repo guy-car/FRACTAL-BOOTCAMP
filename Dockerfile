@@ -1,8 +1,9 @@
-FROM node:22
+FROM oven/bun:1
+
 WORKDIR /usr/src/app
 
 # Copy package files first for better caching
-COPY package*.json ./
+COPY package*.json bun.lock* ./
 
 # Install dependencies
 RUN bun install --frozen-lockfile
