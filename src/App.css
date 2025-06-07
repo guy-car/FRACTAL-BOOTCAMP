@@ -4,7 +4,7 @@
   padding: 2rem;
   text-align: center;
 
-  background-image: url('/The Matrix Loop GIF.gif');
+  background-image: url('/The_Matrix_Loop.gif');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -20,7 +20,7 @@
 }
 
 p {
-  font-size: 3rem;
+  font-size: 1rem;
 }
 
 h1, h2, h3, h4 {
@@ -140,12 +140,30 @@ button:hover::before {
 
 .current-player {
   grid-column: 3;
-  justify-self: center
+  justify-self: center;
+  width: 90px;
+  background-color: rgb(0, 0, 0);
+  color: #00ff00;
+  border: 2px solid #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 0.75em 1.5em;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00 inset;
+  position: relative;
+  z-index: 1;
 }
 .current-player img {
-  width: 30%;
-  height: 30%;
+  width: 50%;
+  height: 50%;
   object-fit: contain;
+}
+
+.current-player p {
+  font-size: 1.25rem;
 }
 
 .game-board {
@@ -173,17 +191,8 @@ button:hover::before {
 
 .cell-won {
   flex-basis: 33%;
-  border: rgb(101, 162, 180), solid;
-  background-color:#00ff00a9;
-    align-items: center;   /* Vertical centering */
-  justify-content: center; /* Horizontal centering */
-}
-
-.cell-won:hover {
-  flex-basis: 33%;
-  border: rgb(101, 162, 180), solid;
-  background-color: #00ff0074;
-    align-items: center;   /* Vertical centering */
+  background-color:#00ff00;
+  align-items: center;   /* Vertical centering */
   justify-content: center; /* Horizontal centering */
 }
 
@@ -207,12 +216,23 @@ button:hover::before {
   object-fit: contain;
 }
 
-.game-won {
+.game-won-by-red {
+  background-image: url('/bullets_matrix.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 50vh;
+  width: 60%;
+  opacity: 0.8;
+}
+
+.game-won-by-blue {
   background-image: url('/agent_matrix.gif');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 100vh; /* Full screen */
-  width: 100%;
+  height: 50vh;
+  width: 65%;
+  opacity: 0.8;
 
 }

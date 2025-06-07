@@ -32,6 +32,7 @@ function GameLobby() {
             const gameStatus = () => {
                 if (isInProgress && !game.endState) return 'in progress'
                 if (isUnplayed) return 'unplayed game'
+                if (game.endState === 'tie') return 'tie'
                 return game.endState === 'x'? bluePillImg : redPillImg
             }
 

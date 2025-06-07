@@ -68,17 +68,17 @@ function GameView() {
 
       const bgClass = clsx({
       ['game-section'] : true ,
-      ['game-won'] : gameState.endState
+      ['game-won-by-red'] : gameState.endState === 'o',
+      ['game-won-by-blue'] : gameState.endState === 'x',
     })
-
+    
   const boardEl = gameState.board.map((cell, index) => {
       const clickedCell = cell !== null
       console.log('cell is :', cell)
 
       const cellClass = clsx({
       ['cell'] : true,
-      ['cell-won'] : winningCells?.includes(index),
-      ['cell-clicked'] : clickedCell
+      ['cell-clicked'] : clickedCell || gameState.endState
     })
     const getCellContent = (cell: string | null) => {
       if (cell === 'x') return bluePillImg
@@ -92,15 +92,34 @@ function GameView() {
     )
   })
 
+  const renderGameStatus = () => {
+  
+  if (gameState.endState === 'tie')
+    return (
+            <div className='current-player'>
+                {<p>Tie <br></br>{bluePillImg}{redPillImg}</p>}
+            </div>
+  )
+  if (gameState.endState === 'x' || gameState.endState === 'o') 
+    return (
+            <div className='current-player'>
+                {<p>Winner: <br></br>{gameState.currentPlayer === 'x'? bluePillImg : redPillImg}</p>}
+            </div>
+  )
+    return (
+            <div className='current-player'>
+                {<p>Current player: <br></br>{gameState.currentPlayer === 'x'? bluePillImg : redPillImg}</p>}
+            </div>
+    )
+  }
+
   return (
     <>
         <div className={bgClass}>
             <div className="game-board">
                 {boardEl}
             </div>
-            <div className='current-player'>
-                <h4>Current player: <br></br>{gameState.currentPlayer === 'x'? bluePillImg : redPillImg}</h4>
-            </div>
+            {renderGameStatus()}
         </div>
         <div className='game-section-options'>
             <button onClick={() => navigate('/')}>Back to Lobby</button>
