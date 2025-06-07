@@ -72,9 +72,13 @@ function GameView() {
     })
 
   const boardEl = gameState.board.map((cell, index) => {
+      const clickedCell = cell !== null
+      console.log('cell is :', cell)
+
       const cellClass = clsx({
       ['cell'] : true,
-      ['cell-won'] : winningCells?.includes(index)
+      ['cell-won'] : winningCells?.includes(index),
+      ['cell-clicked'] : clickedCell
     })
     const getCellContent = (cell: string | null) => {
       if (cell === 'x') return bluePillImg
