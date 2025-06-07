@@ -9,7 +9,7 @@ import { type Game } from './src/game'
 const app = express();
 app.use(express.json())
 
-const localURL = "http://localhost:5173"
+// const localURL = "http://localhost:5173"
 const productionURL = process.env.CLIENT_URL 
 const env = process.env.NODE_ENV
 
@@ -58,7 +58,7 @@ const server = app.listen(PORT,
 
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "*",
         methods: ["GET", "POST"],
     },
 })
