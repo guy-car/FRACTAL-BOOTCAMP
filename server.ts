@@ -15,10 +15,15 @@ const env = process.env.NODE_ENV
 
 if (env === 'production' && process.env.CLIENT_URL === undefined) throw new Error('CLIENT_URL is missing')
 
-app.use(cors({
-    origin: env === 'production' ? productionURL : localURL,
-    methods: ["GET", "POST"],
-}))
+// app.use(cors({
+//     origin: env === 'production' ? productionURL : localURL,
+//     methods: ["GET", "POST"],
+// }))
+
+app.use(cors)({
+    origin: "*",
+    methods: ["GET", "POST"]
+})
 
 // const api = new InMemoryTicTacToeApi
 const api = new DbTicTacToeApi()
