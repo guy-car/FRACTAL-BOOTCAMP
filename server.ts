@@ -1,30 +1,15 @@
 import express from "express";
 import cors from "cors"
 // import { InMemoryTicTacToeApi } from './src/api'
-import { DbTicTacToeApi } from './src/db/dbapi.js'
+import { DbTicTacToeApi } from './src/db/dbapi'
 import { Server } from "socket.io"
-import { GAME_UPDATED, USER_JOINED } from "./constants.js";
+import { GAME_UPDATED, USER_JOINED } from "./constants";
 import { type Game } from './src/game'
 
 const app = express();
 app.use(express.json())
 
-// const localURL = "http://localhost:5173"
-const productionURL = process.env.CLIENT_URL 
-const env = process.env.NODE_ENV
-
-if (env === 'production' && process.env.CLIENT_URL === undefined) throw new Error('CLIENT_URL is missing')
-
-// app.use(cors({
-//     origin: env === 'production' ? productionURL : localURL,
-//     methods: ["GET", "POST"],
-// }))
-
-app.use(cors)({
-    origin: "*",
-    methods: ["GET", "POST"]
-})
-
+app.use(cors())
 // const api = new InMemoryTicTacToeApi
 const api = new DbTicTacToeApi()
 

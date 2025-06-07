@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci
+RUN bun install --frozen-lockfile
 
 # Copy source code
 COPY . .
@@ -15,3 +15,5 @@ EXPOSE 3000
 
 # Command to start your server
 CMD ["npm", "run", "server"]
+
+
