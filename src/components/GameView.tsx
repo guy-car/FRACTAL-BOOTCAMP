@@ -39,7 +39,7 @@ function GameView() {
   }
 
     useEffect(() => {
-        const socket = io("http://localhost:3000");
+        const socket = io(import.meta.env.VITE_BACKEND_URL);
         socket.on("connect", () => {
             console.log("connected to socket");
             // Join the game room
