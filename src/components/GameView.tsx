@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { findWinningCells } from '../game.ts'
+// import { findWinningCells } from '../game.ts'
 import { ClientTicTacToeApi } from '../api.ts'
 import { type Game } from '../game'
 import { useLoaderData } from 'react-router'
@@ -11,7 +11,7 @@ import clsx from 'clsx'
 function GameView() {
 
     const api = useMemo(() => new ClientTicTacToeApi(), [])
-    const [winningCells, setWinningCells] = useState<number[] | null>([])
+    // const [winningCells, setWinningCells] = useState<number[] | null>([])
 
     const { game: initialGame } = useLoaderData<{ game: Game }>()
 
@@ -29,10 +29,10 @@ function GameView() {
       const updatedGame = await api.makeMove(gameState!.id, index)
       setGameState(updatedGame)
 
-      if (updatedGame.endState === 'x' || updatedGame.endState === 'o') {
-        const winningC = findWinningCells(updatedGame)
-        setWinningCells(winningC)
-      }
+      // if (updatedGame.endState === 'x' || updatedGame.endState === 'o') {
+      //   const winningC = findWinningCells(updatedGame)
+      //   setWinningCells(winningC)
+      // }
     } catch (error) {
       console.error('Move failed:', error)
     }
